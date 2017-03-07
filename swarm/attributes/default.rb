@@ -15,7 +15,7 @@ default['swarm']['discovery']['file_path'] = nil
 # If not specified then a search will be run instead
 # Only used with provider "consul", "etcd" or "zk"
 #default['swarm']['discovery']['host'] = nil
-default['swarm']['discovery']['host'] = "192.168.10.7"
+default['swarm']['discovery']['host'] = "192.168.1.7"
 # Specify a port for your discovery service. This can be used in combination with
 # ['swarm']['discovery']['host'] or with search. It need not be used at all if your
 # discovery provider is running on standard ports that can be inferrred from the protocol
@@ -35,12 +35,15 @@ default['swarm']['restart_policy'] = 'on-failure'
 default['swarm']['discovery_options'] = []
 
 default['swarm']['manager']['bind'] = '0.0.0.0'
-default['swarm']['manager']['port'] = 3376
+#default['swarm']['manager']['port'] = 3376
+default['swarm']['manager']['port'] = 4000
 default['swarm']['manager']['advertise'] = node['ipaddress']
 default['swarm']['manager']['strategy'] = 'spread'
-default['swarm']['manager']['replication'] = false
+#default['swarm']['manager']['replication'] = false
+default['swarm']['manager']['replication'] = true
 default['swarm']['manager']['replication_ttl'] = '30s'
-default['swarm']['manager']['heartbeat'] = nil
+#default['swarm']['manager']['heartbeat'] = nil
+default['swarm']['manager']['heartbeat'] = '60s'
 default['swarm']['manager']['cluster_driver'] = 'swarm'
 # Cluster driver options
 default['swarm']['manager']['cluster_options'] = []

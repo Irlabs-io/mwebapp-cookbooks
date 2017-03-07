@@ -25,12 +25,15 @@ module SwarmCookbook
     # Build the full swarm command for launching a manager container
     # @return [String]
     def build_manager_cmd
-      cmd = "manage --host #{node['swarm']['manager']['bind']}:#{node['swarm']['manager']['port']}"\
-        " --strategy #{node['swarm']['manager']['strategy']} --advertise #{node['swarm']['manager']['advertise']}"\
-        " --cluster-driver #{node['swarm']['manager']['cluster_driver']}"
+      #cmd = "manage --host #{node['swarm']['manager']['bind']}:#{node['swarm']['manager']['port']}"\
+      cmd = "manage -H :#{node['swarm']['manager']['port']}"\
+        " --advertise #{node['swarm']['manager']['advertise']}:#{node['swarm']['manager']['port']}"
+# " --strategy #{node['swarm']['manager']['strategy']} --advertise #{node['swarm']['manager']['advertise']}"\
+#        " --cluster-driver #{node['swarm']['manager']['cluster_driver']}"
 
-      cmd << " --replication --replication-ttl #{node['swarm']['manager']['replication_ttl']}" if node['swarm']['manager']['replication']
-      cmd << " --heartbeat #{node['swarm']['manager']['heartbeat']}" if node['swarm']['manager']['heartbeat']
+   #   cmd << " --replication --replication-ttl #{node['swarm']['manager']['replication_ttl']}" if node['swarm']['manager']['replication']
+      cmd << " --replication " if node['swarm']['manager']['replication']
+#      cmd << " --heartbeat #{node['swarm']['manager']['heartbeat']}" if node['swarm']['manager']['heartbeat']
 
       add_discovery_options(cmd)
       add_cluster_options(cmd)
