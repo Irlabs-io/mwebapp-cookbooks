@@ -5,4 +5,5 @@ default['docker-engine']['install']['package']['name'] = value_for_platform_fami
   'rhel' => 'docker'
 )
 
-default['docker-engine']['install']['repo'] = false
+#default['docker-engine']['install']['repo'] = false
+default['docker-engine']['install']['repo'] = true
