@@ -5,7 +5,8 @@ default['swarm']['image']['read_timeout'] = 180
 
 # Swarm discovery provider type to use. Valid values are
 # token, consul, etcd, zk, file
-default['swarm']['discovery']['provider'] = 'token'
+#default['swarm']['discovery']['provider'] = 'token'
+default['swarm']['discovery']['provider'] = "consul"
 # Discovery token to use, only used with provider "token"
 default['swarm']['discovery']['token'] = nil
 # Path to discovery file. Only used for provider "file"
@@ -13,11 +14,13 @@ default['swarm']['discovery']['file_path'] = nil
 # Specify a host running the discovery service for the Swarm cluster
 # If not specified then a search will be run instead
 # Only used with provider "consul", "etcd" or "zk"
-default['swarm']['discovery']['host'] = nil
+#default['swarm']['discovery']['host'] = nil
+default['swarm']['discovery']['host'] = "192.168.10.7"
 # Specify a port for your discovery service. This can be used in combination with
 # ['swarm']['discovery']['host'] or with search. It need not be used at all if your
 # discovery provider is running on standard ports that can be inferrred from the protocol
-default['swarm']['discovery']['port'] = nil
+#default['swarm']['discovery']['port'] = nil
+default['swarm']['discovery']['port'] = "8500"
 # When a discovery host is not specified the cookbook will attempt to find a discovery
 # provider using the specified query
 # Only used with provider "consul", "etcd" or "zk"
