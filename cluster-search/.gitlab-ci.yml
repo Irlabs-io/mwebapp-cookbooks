@@ -1,0 +1,3 @@
+'git sanitary check':
+  script:
+    - git log --check
