@@ -16,4 +16,5 @@
 
 cookbook_name = 'docker-platform'
 
+default[cookbook_name]['swarm']['consul'] = 'ip-192-168-1-7.us-west-2.compute.internal'
 default[cookbook_name]['consul']['port'] = 8500

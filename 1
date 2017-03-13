@@ -34,10 +34,9 @@ default[cookbook_name]['swarm']['join_retry_delay'] = 5
 # Cluster configuration with cluster-search
 # Role used by the search to find other nodes of the cluster
 #default[cookbook_name]['role'] = cookbook_name
-default[cookbook_name]['role'] = 'worker'
+default[cookbook_name]['role'] = 'node_worker'
 # Hosts of the cluster, deactivate search if not empty
-#default[cookbook_name]['hosts'] = []
-default[cookbook_name]['hosts'] = ["ip-192-168-10-20.us-west-2.compute.internal", "ip-192-168-10-100.us-west-2.compute.internal", "ip-192-168-12-20.us-west-2.compute.internal", "ip-192-168-10-20.us-west-2.compute.internal"]
+default[cookbook_name]['hosts'] = []
 # Expected size of the cluster. Ignored if hosts is not empty
 #default[cookbook_name]['size'] = 1
 default[cookbook_name]['size'] = 3
