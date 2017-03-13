@@ -1,0 +1,53 @@
+{
+  "name": "docker-platform",
+  "description": "Use Docker ressources to install/configure Docker with attributes",
+  "long_description": "Docker Platform Cookbook\n========================\n\nDescription\n-----------\n\n[Docker](https://www.docker.com) is an open-source project that automates\nthe deployment of applications inside software containers, by providing\nan additional layer of abstraction and automation of operating-system-level\nvirtualisation on Linux.\nDocker uses the resource isolation features of the Linux kernel such as cgroups\nand kernel namespaces, and a union-capable file system such as aufs and others\nto allow independent \"containers\" to run within a single Linux instance,\navoiding the overhead of starting and maintaining virtual machines.\n\nThis cookbook provides recipes to install and configure Docker with\nconfiguration stored in attributes. It wraps [docker cookbook][] resources to\ncontrol Docker status and also provides resources to manager swarm cluster\ncreation and volumes deployment.\n\nRequirements\n------------\n\n### Cookbooks and gems\n\nDeclared in [metadata.rb](metadata.rb) and in [Gemfile](Gemfile).\n\n### Platforms\n\n- RHEL Family 7, tested on Centos\n\nNote: by composing it with [apt-docker cookbook][], it should work fine on\nDebian / Ubuntu.\n\nUsage\n-----\n\n### Test\n\nThis cookbook is fully tested in test-kitchen, using the vagrant driver and\nserverspec verifier.\n\nFor more information, see [.kitchen.yml](.kitchen.yml) and [test](test)\ndirectory.\n\nAttributes\n----------\n\nConfiguration is done by overriding default attributes. All configuration keys\nhave a default defined in [attributes/default.rb](attributes/default.rb).\nPlease read it to have a comprehensive view of what and how you can configure\nthis cookbook behavior.\n\nIn addition, you can use attributes to define [docker cookbook][] resources.\nAll you have to do is to define an attribute of the same name as the resource\nyou want to call containing the different instances of this resource. For\ninstance:\n\n```json\n\"docker_volume\": {\n  \"data\": {\n    \"action\": \"create\"\n  },\n  \"to_remove\": {\n    \"action\": \"remove\"\n  }\n}\n```\n\nIt creates a docker volume named `data` and remove the one called `to_remove`.\nThe key of each sub hash table is the name attribute and the value is an hash\ntable containing the resource configuration, mapping exactly the attribute name\ndefined in [docker cookbook][] documentation.\n\nIf you need multiple arguments for an attribute, you have to declare them in\nan array. If you need an array as single argument, add an extra array.\n\nFor instance:\n\n```json\n\"docker_container\": {\n  \"my_alpine\": {\n    \"container_name\": \"alpine\",\n    \"repo\": \"alpine\",\n    \"volumes\": [[\"data:/data\"]],\n    \"action\": \"run\",\n    \"subscribes\": [\"redeploy\", \"docker_image[alpine]\", \"immediately\"]\n  }\n}\n```\n\nYou can find other examples in [.kitchen.yml](.kitchen.yml) file.\n\nRecipes\n-------\n\n### default\n\nInclude `repository`, `package`, `service` and `docker` recipes.\n\n### repository\n\nConfigure and install official docker yum repository.\n\n### package\n\nInstall `docker-engine` package or upgrade it if attribute version is set to\n`latest`.\n\n### service\n\nEnable and start `docker` service. Restart it if systemd config was updated.\n\n### docker\n\nWrap all [docker cookbook][] resources so it is possible to use them with\nattributes. Read [attributes](#attributes) section for more details.\n\n### swarm\n\nUse [cluster-search cookbook][] to determine which node should create\nand initialize the swarm.\n\nUse `docker_platform_swarm` resource of the cookbook to initialize or join\na swarm. See [.kitchen.yml](.kitchen.yml) for examples.\n\nUse `docker_platform_service` resource of the cookbook to create a service\non a swarm manager.\n\nThe swarm will be initialized on predefined node using the\n[cluster-search cookbook][].\nThe node id returned by cluster-search should be equal to the\n`node['docker-platform']['initiator_id']` attribute.\n\nThe swarm join token is set in a consul backend after swarm initialization.\n\nYou need a **consul** cluster. This is not in the scope of this cookbook but\nif you need one, you should consider using [Consul Platform][consul-platform].\n\nUse [cluster-search cookbook][] to determine consul cluster addresses.\nThe join token will be requested by nodes before joining the swarm.\n\nResources/Providers\n-------------------\n\n### swarm\n\nFor instance:\n\nInitialize a swarm and store token on consul:\n\n```json\n\"docker_platform\": {\n  \"swarm\": {\n    \"consul\": {\n      \"hosts\": \"consul-swarm-host\"\n    },\n    \"options\": {\n      \"listen_addr\": \"0.0.0.0:2377\",\n      \"action\": \"create\"\n    }\n  }\n}\n```\n\nJoin an existing docker swarm with token stored on consul:\n\n```json\n\"docker_platform\": {\n  \"swarm\": {\n    \"consul\": {\n      \"hosts\": \"consul-swarm-host\"\n    },\n    \"action\": [\"join\"]\n  }\n}\n```\n\nDeploy 5 replicas of redis image on a docker swarm:\n\n```json\n\"docker_platform\": {\n  \"services\": {\n    \"redis\": {\n      \"action\": \"create\",\n      \"replicas\": 5,\n      \"image\": \"redis:latest\"\n    }\n  }\n}\n```\n\nChangelog\n---------\n\nAvailable in [CHANGELOG.md](CHANGELOG.md).\n\nContributing\n------------\n\nPlease read carefully [CONTRIBUTING.md](CONTRIBUTING.md) before making a merge\nrequest.\n\nLicense and Author\n------------------\n\n- Author:: Samuel Bernard (<samuel.bernard@s4m.io>)\n- Author:: Florian Philippon (<florian.philippon@s4m.io>)\n\n```text\nCopyright (c) 2016-2017 Sam4Mobile\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n```\n\n[docker]: https://docker.io\n[apt-docker cookbook]: https://supermarket.chef.io/cookbooks/apt-docker\n[docker cookbook]: https://supermarket.chef.io/cookbooks/docker\n[cluster-search cookbook]: https://supermarket.chef.io/cookbooks/cluster-search\n[consul-platform]: https://supermarket.chef.io/cookbooks/consul-platform\n",
+  "maintainer": "Sam4Mobile",
+  "maintainer_email": "dps.team@s4m.io",
+  "license": "Apache 2.0",
+  "platforms": {
+    "centos": ">= 7.1"
+  },
+  "dependencies": {
+    "consul-platform": ">= 0.0.0",
+    "cluster-search": ">= 0.0.0",
+    "docker": ">= 0.0.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "1.1.0",
+  "source_url": "https://gitlab.com/s4m-chef-repositories/docker-platform",
+  "issues_url": "https://gitlab.com/s4m-chef-repositories/docker-platform/issues",
+  "privacy": false,
+  "chef_versions": [
+
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}
