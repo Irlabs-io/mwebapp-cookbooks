@@ -1,0 +1,52 @@
+{
+  "name": "consul-platform",
+  "description": "Cookbook used to install and configure a consul cluster",
+  "long_description": "Consul Platform\n=============\n\nDescription\n-----------\n\n[Consul](https://www.hashicorp.com/consul.html) is a completely distributed,\nhighly available, and datacenter aware solution for service discovery.\n\nRequirements\n------------\n\n### Cookbooks and gems\n\nDeclared in [metadata.rb](metadata.rb) and in [Gemfile](Gemfile).\n\n### Platforms\n\nA *systemd* managed distribution:\n- RHEL Family 7, tested on Centos\n\nUsage\n-----\n\n### Test\n\nThis cookbook is fully tested through the installation of a working 3-nodes\ncluster in docker hosts. This uses kitchen, docker and some monkey-patching.\n\n### Easy Setup\n\nSet `node['consul-platform']['hosts']` to an array containing the\nhostnames of the nodes of the consul cluster\n\n### Search\n\nThe recommended way to use this cookbook is through the creation of a role per\n**consul** cluster. This enables the search by role feature, allowing a\nsimple service discovery.\n\nIn fact, there are two ways to configure the search:\n\n1. With a static configuration through a list of hostnames (attributes `hosts`\n   that is `node['consul-platform']['hosts']`) for nodes belonging to\n   consul cluster.\n2. With a real search, performed on a role (attributes `role` and `size`\n   like in `node['consul-platform']['role']`).\n   The role should be in the run-list of all nodes of the cluster.\n   The size is a safety and should be the number of nodes of this role.\n\nIf hosts is configured, `role` and `size` are ignored\n\nSee [roles](test/integration/roles) for some examples and\n[Cluster Search][cluster-search] documentation for more information.\n\n### Test\n\nThis cookbook is fully tested through the installation of a working 3-nodes\ncluster in docker hosts. This uses kitchen, docker and some monkey-patching.\n\nFor more information, see [.kitchen.yml](.kitchen.yml) and [test](test)\ndirectory.\n\n\nAttributes\n----------\n\nConfiguration is done by overriding default attributes. All configuration keys\nhave a default defined in [attributes/default.rb](attributes/default.rb).\nPlease read it to have a comprehensive view of what and how you can configure\nthis cookbook behavior.\n\nRecipes\n-------\n\n### default\n\nInclude `search`, `user`, `install`, `config` and `systemd` recipes.\n\n### search\n\nSearch the node (initiator) that will initialize first the consul cluster\nusing [Cluster Search][cluster-search].\n\nOther nodes will join the consul cluster after the initiator using its\naddress.\n\n### user\n\nCreate user/group used by consul.\n\n### install\n\nInstall consul using ark.\n\n### config\n\nGenerate options for the consul node.\n\nGlobal options for each consul node in the cluster are defined through\nthe following attribute: `node['consul-platform']['options']`.\n\n### systemd\n\nCreate systemd service file for consul.\n\nChangelog\n---------\n\nAvailable in [CHANGELOG.md](CHANGELOG.md).\n\nContributing\n------------\n\nPlease read carefully [CONTRIBUTING.md](CONTRIBUTING.md) before making a merge\nrequest.\n\nLicense and Author\n------------------\n\n- Author:: Samuel Bernard (<samuel.bernard@s4m.io>)\n- Author:: Florian Philippon (<florian.philippon@s4m.io>)\n\n```text\nCopyright (c) 2016 Sam4Mobile\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n```\n[cluster-search]: https://supermarket.chef.io/cookbooks/cluster-search\n",
+  "maintainer": "Sam4Mobile",
+  "maintainer_email": "dps.team@s4m.io",
+  "license": "Apache 2.0",
+  "platforms": {
+    "centos": ">= 7.1"
+  },
+  "dependencies": {
+    "cluster-search": ">= 0.0.0",
+    "ark": ">= 0.0.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "1.0.0",
+  "source_url": "https://gitlab.com/s4m-chef-repositories/consul-platform",
+  "issues_url": "https://gitlab.com/s4m-chef-repositories/consul-paltform/issues",
+  "privacy": false,
+  "chef_versions": [
+
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}
