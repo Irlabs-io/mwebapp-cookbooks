@@ -52,8 +52,8 @@ default[cookbook_name]['bin'] = '/bin/docker'
 default[cookbook_name]['package_retries'] = nil
 
 # Create docker networks
-#default[cookbook_name]['networks'] = {}
-default[cookbook_name]['networks'] = 'mwebapp'
+default[cookbook_name]['networks'] = {}
+#default[cookbook_name]['networks'] = 'mwebapp'
 #default[cookbook_name]['services'] = 'redis'
 #default[cookbook_name]['services']['replicas'] = 1
 #default[cookbook_name]['services']['image'] = 'redis:latest'
